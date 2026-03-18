@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MeetMind — History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fdf8f6; --surface:#ffffff; --surface2:#fef4f0;
+  --lavender:#c4b5fd; --lavender-l:#ede9fe; --lavender-d:#7c3aed;
+  --mint:#6ee7b7;     --mint-l:#d1fae5;     --mint-d:#059669;
+  --peach:#fdba74;    --peach-l:#ffedd5;    --peach-d:#ea580c;
+  --rose:#fda4af;     --rose-l:#ffe4e6;     --rose-d:#e11d48;
+  --sky:#7dd3fc;      --sky-l:#e0f2fe;      --sky-d:#0284c7;
+  --lemon:#fde68a;    --lemon-l:#fefce8;    --lemon-d:#ca8a04;
+  --text:#2d1f3d;     --text2:#6b5577;      --text3:#9d89a8;
+  --border:rgba(196,181,253,0.25); --border2:rgba(196,181,253,0.45);
+  --shadow:0 4px 24px rgba(124,58,237,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
+
+.blob-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.3;animation:float 12s ease-in-out infinite;}
+.blob-1{width:350px;height:350px;background:var(--lavender);top:-80px;right:-60px;}
+.blob-2{width:280px;height:280px;background:var(--mint);bottom:-60px;left:-40px;animation-delay:4s;}
+.blob-3{width:220px;height:220px;background:var(--peach);top:50%;right:10%;animation-delay:8s;}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-12px)}}
+
+header{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:64px;
+  background:rgba(253,248,246,0.9);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border2);
+}
+.logo{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;
+      display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
+.logo-gem{width:34px;height:34px;border-radius:10px;
+          background:linear-gradient(135deg,var(--lavender),var(--rose));
+          display:flex;align-items:center;justify-content:center;font-size:16px;
+          box-shadow:0 4px 12px rgba(196,181,253,0.5);}
+.logo em{color:var(--lavender-d);font-style:normal;}
+.nav-btn{font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;
+         padding:8px 18px;border-radius:30px;border:1px solid var(--border2);
+         background:var(--lavender-l);color:var(--lavender-d);
+         cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.nav-btn:hover{background:var(--lavender);color:#fff;transform:translateY(-1px);}
+
+.container{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:36px 24px;}
+.page-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.page-sub{font-size:13px;color:var(--text3);margin-bottom:32px;}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;}
+.stat-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;
+           padding:22px 24px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;opacity:0.4;}
+.stat-card:nth-child(1)::before{background:var(--lavender-l);}
+.stat-card:nth-child(2)::before{background:var(--mint-l);}
+.stat-card:nth-child(3)::before{background:var(--peach-l);}
+.stat-icon{font-size:22px;margin-bottom:10px;}
+.stat-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-bottom:4px;}
+.stat-card:nth-child(1) .stat-value{color:var(--lavender-d);}
+.stat-card:nth-child(2) .stat-value{color:var(--mint-d);}
+.stat-card:nth-child(3) .stat-value{color:var(--peach-d);}
+.stat-label{font-size:12px;color:var(--text3);font-weight:500;}
+
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--text2);}
+
+/* Meeting cards */
+.meeting-card{background:var(--surface);border:1px solid var(--border2);
+              border-radius:20px;margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden;transition:all 0.25s;}
+.meeting-card:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(124,58,237,0.12);}
+
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;}
+
+/* Title area */
+.card-title-wrap{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.card-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--text);}
+.edit-btn{
+  background:var(--lavender-l);border:1px solid var(--border2);
+  border-radius:6px;padding:3px 7px;font-size:11px;
+  color:var(--lavender-d);cursor:pointer;
+  opacity:0;transition:opacity 0.2s;
+  line-height:1;
+}
+.card-header:hover .edit-btn{opacity:1;}
+.edit-btn:hover{background:var(--lavender);color:#fff;}
+
+/* Title input */
+.title-input{
+  font-family:'Playfair Display',serif;font-size:15px;font-weight:600;
+  color:var(--text);background:var(--lavender-l);
+  border:2px solid var(--lavender);border-radius:8px;
+  padding:3px 12px;outline:none;
+  width:320px;max-width:100%;
+}
+
+.card-meta{display:flex;gap:10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);align-items:center;}
+.meta-sep{width:3px;height:3px;border-radius:50%;background:var(--text3);}
+.card-right{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+
+.badge{font-family:'DM Mono',monospace;font-size:10px;padding:4px 12px;border-radius:20px;}
+.badge-done{background:var(--mint-l);color:var(--mint-d);border:1px solid rgba(110,231,183,0.4);}
+.badge-live{background:var(--rose-l);color:var(--rose-d);border:1px solid rgba(253,164,175,0.4);animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+.dl-btn{font-family:'DM Mono',monospace;font-size:10px;padding:5px 12px;border-radius:20px;
+        background:var(--lavender-l);color:var(--lavender-d);
+        border:1px solid rgba(196,181,253,0.5);text-decoration:none;transition:all 0.2s;}
+.dl-btn:hover{background:var(--lavender);color:#fff;}
+.del-btn{background:none;border:1px solid var(--border2);border-radius:8px;
+         color:var(--text3);font-size:13px;padding:5px 9px;cursor:pointer;transition:all 0.2s;}
+.del-btn:hover{border-color:var(--rose);color:var(--rose-d);background:var(--rose-l);}
+
+/* Card body */
+.card-body{display:none;border-top:1px solid var(--border);}
+.card-body.open{display:block;}
+.card-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 8px;background:rgba(237,233,254,0.2);}
+.ctab{padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
+      color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;}
+.ctab:hover{color:var(--text2);}
+.ctab.active{color:var(--lavender-d);border-bottom-color:var(--lavender);}
+.ctab-content{display:none;padding:16px 22px;max-height:280px;overflow-y:auto;}
+.ctab-content.active{display:block;}
+
+.summary-text{font-size:13px;line-height:1.8;color:var(--text2);}
+.action-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.action-row:last-child{border-bottom:none;}
+.action-text{font-size:13px;color:var(--text);flex:1;line-height:1.5;}
+.action-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.chip{font-family:'DM Mono',monospace;font-size:10px;padding:2px 9px;border-radius:20px;}
+.chip-owner{background:var(--sky-l);color:var(--sky-d);border:1px solid rgba(125,211,252,0.4);}
+.chip-dl{background:var(--lemon-l);color:var(--lemon-d);border:1px solid rgba(253,230,138,0.5);}
+.t-line{font-size:12px;line-height:1.9;color:var(--text2);margin-bottom:2px;}
+.t-speaker{font-family:'DM Mono',monospace;color:var(--lavender-d);font-size:11px;}
+.t-time{font-family:'DM Mono',monospace;color:var(--text3);font-size:10px;margin-right:6px;}
+
+.empty-msg{text-align:center;padding:60px 20px;color:var(--text3);line-height:2;}
+.empty-msg .icon{font-size:44px;margin-bottom:16px;display:block;}
+
+#search-input:focus{border-color:var(--lavender);box-shadow:0 0 0 3px rgba(196,181,253,0.2);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--lavender);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div class="blob-wrap">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-gem">🧠</div>
+    Meet<em>Mind</em>
+  </a>
+  <a href="index.html" class="nav-btn">▶ New Meeting</a>
+</header>
+
+<div class="container">
+  <div class="page-title">Meeting History</div>
+  <div class="page-sub">All your recorded sessions, transcripts, and summaries in one place.</div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">🎙️</div>
+      <div class="stat-value" id="stat-meetings">–</div>
+      <div class="stat-label">Meetings recorded</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💬</div>
+      <div class="stat-value" id="stat-words">–</div>
+      <div class="stat-label">Words transcribed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" id="stat-actions">–</div>
+      <div class="stat-label">Action items captured</div>
+    </div>
+  </div>
+
+  <div class="section-hdr">
+    <span class="section-title">Recent Sessions</span>
+  </div>
+
+  <!-- Search bar -->
+  <div style="position:relative;margin-bottom:20px;">
+    <input type="text" id="search-input" placeholder="🔍  Search transcripts, summaries, action items…"
+      oninput="filterMeetings(this.value)"
+      style="width:100%;padding:12px 20px;border-radius:30px;border:1px solid var(--border2);
+             background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;
+             font-size:13px;outline:none;box-shadow:var(--shadow);transition:all 0.2s;">
+  </div>
+  <div id="no-results" style="display:none;text-align:center;padding:40px;color:var(--text3);font-size:13px;">
+    No meetings match your search.
+  </div>
+
+  <div id="meetings-list">
+    <div class="empty-msg"><span class="icon">📂</span>No meetings yet.<br/>Head back and press Start to record your first session.</div>
+  </div>
+</div>
+
+<script>
+const API = "http://localhost:8000";
+const openCards = new Set();
+
+async function load() {
+  try {
+    const res  = await fetch(`${API}/meetings`);
+    const data = await res.json();
+    renderStats(data.stats);
+    renderMeetings(data.meetings);
+  } catch(e) {
+    document.getElementById("meetings-list").innerHTML =
+      `<div class="empty-msg"><span class="icon">⚠️</span>Cannot connect to server.<br/>Make sure main.py is running.</div>`;
+  }
+}
+
+function renderStats(s) {
+  document.getElementById("stat-meetings").textContent = s.total_meetings || 0;
+  document.getElementById("stat-words").textContent    = (s.total_words||0).toLocaleString();
+  document.getElementById("stat-actions").textContent  = s.total_actions || 0;
+}
+
+function renderMeetings(meetings) {
+  const list = document.getElementById("meetings-list");
+  if (!meetings || !meetings.length) return;
+  list.innerHTML = "";
+  allMeetingsData = meetings;
+  meetings.forEach(m => list.appendChild(buildCard(m)));
+}
+
+function buildCard(m) {
+  const card = document.createElement("div");
+  card.className = "meeting-card";
+  card.id = `card-${m.id}`;
+
+  const dur  = m.duration_s ? fmtDur(m.duration_s) : "–";
+  const date = new Date(m.started_at * 1000).toLocaleString();
+  const badge = m.status === "completed"
+    ? `<span class="badge badge-done">✓ completed</span>`
+    : `<span class="badge badge-live">● live</span>`;
+
+  card.innerHTML = `
+    <div class="card-header" id="hdr-${m.id}">
+      <div style="flex:1;min-width:0">
+        <div class="card-title-wrap">
+          <span class="card-title" id="title-text-${m.id}">${esc(m.title)}</span>
+          <button class="edit-btn" id="edit-btn-${m.id}">✏ rename</button>
+        </div>
+        <div class="card-meta">
+          <span>${date}</span>
+          <span class="meta-sep"></span>
+          <span>${dur}</span>
+          <span class="meta-sep"></span>
+          <span>${(m.word_count||0).toLocaleString()} words</span>
+        </div>
+      </div>
+      <div class="card-right">
+        ${badge}
+        <a class="dl-btn" href="${API}/meetings/${m.id}/report" target="_blank">⬇ PDF</a>
+        <button class="del-btn" id="del-btn-${m.id}">🗑</button>
+      </div>
+    </div>
+    <div class="card-body" id="body-${m.id}">
+      <div class="card-tabs">
+        <div class="ctab active" id="ctab-summary-${m.id}">📋 Summary</div>
+        <div class="ctab"        id="ctab-actions-${m.id}">✅ Actions</div>
+        <div class="ctab"        id="ctab-transcript-${m.id}">💬 Transcript</div>
+      </div>
+      <div class="ctab-content active" id="tab-summary-${m.id}"><div style="color:var(--text3);font-size:12px">Loading…</div></div>
+      <div class="ctab-content"        id="tab-actions-${m.id}"></div>
+      <div class="ctab-content"        id="tab-transcript-${m.id}"></div>
+    </div>`;
+
+  // Wire up events using card.querySelector (card not in DOM yet)
+  const id = m.id;
+
+  card.querySelector(`#hdr-${id}`).addEventListener("click", function() {
+    toggleCard(id);
+  });
+
+  card.querySelector(`#edit-btn-${id}`).addEventListener("click", function(e) {
+    e.stopPropagation();
+    startEdit(id);
+  });
+
+  card.querySelector(`#del-btn-${id}`).addEventListener("click", function(e) {
+    e.stopPropagation();
+    deleteMeeting(id);
+  });
+
+  card.querySelector(".dl-btn").addEventListener("click", function(e) {
+    e.stopPropagation();
+  });
+
+  ["summary","actions","transcript"].forEach(name => {
+    card.querySelector(`#ctab-${name}-${id}`).addEventListener("click", function(e) {
+      e.stopPropagation();
+      switchTab(id, name);
+    });
+  });
+
+  return card;
+}
+
+async function toggleCard(id) {
+  const body = document.getElementById(`body-${id}`);
+  if (openCards.has(id)) {
+    body.classList.remove("open");
+    openCards.delete(id);
+    return;
+  }
+  openCards.add(id);
+  body.classList.add("open");
+  const res  = await fetch(`${API}/meetings/${id}`);
+  const data = await res.json();
+  populateTabs(id, data);
+}
+
+// ── Inline rename ─────────────────────────────────────────────
+
+function startEdit(id) {
+  const titleSpan = document.getElementById(`title-text-${id}`);
+  const editBtn   = document.getElementById(`edit-btn-${id}`);
+  const current   = titleSpan.textContent.trim();
+
+  // Build input
+  const input = document.createElement("input");
+  input.type      = "text";
+  input.className = "title-input";
+  input.value     = current;
+
+  // Replace span with input
+  titleSpan.replaceWith(input);
+  editBtn.style.display = "none";
+  input.focus();
+  input.select();
+
+  // Save on Enter, cancel on Escape
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter")  { e.preventDefault(); commitEdit(id, input.value); }
+    if (e.key === "Escape") { e.preventDefault(); cancelEdit(id, current); }
+  });
+
+  // Save on blur
+  input.addEventListener("blur", function() {
+    commitEdit(id, input.value);
+  });
+}
+
+async function commitEdit(id, newTitle) {
+  newTitle = newTitle.trim() || "Untitled Meeting";
+
+  await fetch(`${API}/meetings/${id}/title`, {
+    method:  "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify({ title: newTitle }),
+  });
+
+  restoreTitle(id, newTitle);
+}
+
+function cancelEdit(id, original) {
+  restoreTitle(id, original);
+}
+
+function restoreTitle(id, title) {
+  // Get the title-wrap div
+  const wrap = document.querySelector(`#card-${id} .card-title-wrap`);
+  if (!wrap) return;
+
+  // Remove input if present
+  const input = wrap.querySelector("input");
+  if (input) input.remove();
+
+  // Restore span
+  let span = document.getElementById(`title-text-${id}`);
+  if (!span) {
+    span = document.createElement("span");
+    span.className = "card-title";
+    span.id = `title-text-${id}`;
+    wrap.insertBefore(span, wrap.firstChild);
+  }
+  span.textContent = title;
+
+  // Restore edit button
+  const editBtn = document.getElementById(`edit-btn-${id}`);
+  if (editBtn) editBtn.style.display = "";
+}
+
+// ── Tab content ───────────────────────────────────────────────
+
+function populateTabs(id, data) {
+  const intel  = (data.intelligence||[]).filter(i => i.is_final);
+  const latest = intel.length ? intel[intel.length-1] : (data.intelligence||[])[0];
+
+  // Store for search
+  const m = allMeetingsData.find(x => x.id === id);
+  if (m) {
+    m._transcript = (data.utterances||[]).map(u => u.text).join(" ");
+    m._summary    = latest ? (latest.summary||"") : "";
+    m._actions    = latest ? (latest.action_items||[]).map(a=>a.task).join(" ") : "";
+  }
+
+  // Summary
+  document.getElementById(`tab-summary-${id}`).innerHTML =
+    latest && latest.summary
+      ? `<div class="summary-text">${esc(latest.summary)}</div>`
+      : `<div style="color:var(--text3);font-size:12px">No summary yet.</div>`;
+
+  // Actions
+  const actions = latest ? (latest.action_items||[]) : [];
+  document.getElementById(`tab-actions-${id}`).innerHTML = actions.length
+    ? actions.map(a => `
+        <div class="action-row">
+          <div style="flex:1">
+            <div class="action-text">${esc(a.task)}</div>
+            <div class="action-chips">
+              <span class="chip chip-owner">👤 ${esc(a.owner)}</span>
+              ${a.deadline ? `<span class="chip chip-dl">📅 ${esc(a.deadline)}</span>` : ""}
+            </div>
+          </div>
+        </div>`).join("")
+    : `<div style="color:var(--text3);font-size:12px">No action items.</div>`;
+
+  // Transcript
+  const utts = data.utterances || [];
+  document.getElementById(`tab-transcript-${id}`).innerHTML = utts.length
+    ? utts.map(u => `
+        <div class="t-line">
+          <span class="t-time">${fmtTime(u.start_s)}</span>
+          <span class="t-speaker">${esc(u.speaker)}</span>: ${esc(u.text)}
+        </div>`).join("")
+    : `<div style="color:var(--text3);font-size:12px">No transcript.</div>`;
+}
+
+function switchTab(id, name) {
+  ["summary","actions","transcript"].forEach(n => {
+    document.getElementById(`ctab-${n}-${id}`).className = "ctab" + (n===name ? " active" : "");
+    document.getElementById(`tab-${n}-${id}`).className  = "ctab-content" + (n===name ? " active" : "");
+  });
+}
+
+async function deleteMeeting(id) {
+  if (!confirm("Delete this meeting and all its data?")) return;
+  await fetch(`${API}/meetings/${id}`, { method: "DELETE" });
+  document.getElementById(`card-${id}`).remove();
+  openCards.delete(id);
+  load();
+}
+
+function fmtDur(s) {
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
+}
+function fmtTime(s) {
+  return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+}
+function esc(s) {
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+load();
+</script>
+</body>
+</html>
