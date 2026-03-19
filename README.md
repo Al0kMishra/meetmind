@@ -241,12 +241,6 @@ meetmind/
 - [x] PDF report generation
 - [x] Meeting history database
 - [x] Search across transcripts
-- [ ] Notion integration
-- [ ] Slack integration
-- [ ] Speaker name mapping
-- [ ] Email report delivery
-- [ ] Chrome extension for Google Meet / Zoom
-- [ ] Online deployment
 
 ---
 
