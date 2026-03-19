@@ -21,8 +21,6 @@
 
 ![MeetMind Demo](https://via.placeholder.com/900x500/fdf8f6/7c3aed?text=Demo+GIF+Coming+Soon)
 
-*↑ Replace with your actual demo GIF — record with Win+G and upload*
-
 </div>
 
 ---
